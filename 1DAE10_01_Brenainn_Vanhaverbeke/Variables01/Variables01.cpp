@@ -1,5 +1,4 @@
-// Variables01.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// Vanhaverbeke, Brenainn - 1DAE10
 
 #include "pch.h"
 #include <iostream>

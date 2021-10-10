@@ -11,6 +11,22 @@ void rgbaToFloat();
 
 void distanceConversion();
 
+void degreesToRadians();
+
+void radiansToDegrees();
+
+void rotationSpeed();
+
+void metersCovered();
+
+void downwardVelocity();
+
+void circleCalculations();
+
+void rectangleCalculations();
+
+void triangleCalculations();
+
 // add headers that you want to pre-compile here
 
 #endif //PCH_H
