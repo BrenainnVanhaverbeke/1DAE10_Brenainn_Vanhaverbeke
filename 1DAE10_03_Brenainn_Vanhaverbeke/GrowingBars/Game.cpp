@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Game.h"
-#include <iostream>
 
 //Basic game functions
 #pragma region gameFunctions											
@@ -112,7 +111,6 @@ void DrawReddishBar()
 	float bottom = g_DefaultOffset;
 	float left = g_DefaultOffset;
 	float colourShift = ((255 - 120) * (g_RedWidth / maxWidth)) / 255;
-	std::cout << colourShift << std::endl;
 	SetColor(g_White);
 	DrawRect(left, bottom, width, height, g_BorderThickness);
 	height -= g_BorderThickness;
@@ -121,7 +119,8 @@ void DrawReddishBar()
 	left += g_BorderThickness / 2;
 	SetColor((120.0f / 255.0f) + colourShift, 0, 0);
 	FillRect(left, bottom, g_RedWidth, height);
-	g_RedWidth = (float)((int)(g_RedWidth + ((int)g_NrFrames % 2)) % (int)maxWidth);
+	g_RedWidth = (float)((int)(g_RedWidth + (15 * (((int)g_NrFrames % 31) / 30))) % (int)maxWidth);
+	//g_RedWidth = (float)((int)(g_RedWidth + ((int)g_NrFrames % 2)) % (int)maxWidth);
 }
 
 #pragma endregion ownDefinitions
