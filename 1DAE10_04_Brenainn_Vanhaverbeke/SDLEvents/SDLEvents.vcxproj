@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b82c7448-5b4d-46db-80cd-f22f65df01dc}</ProjectGuid>
-    <RootNamespace>MovingLines</RootNamespace>
+    <ProjectGuid>{c582c624-2636-44b4-8743-cc8d60aef30d}</ProjectGuid>
+    <RootNamespace>SDLEvents</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
