@@ -13,10 +13,14 @@ float g_WindowHeight{ 300 };
 
 #pragma region ownDeclarations
 // Declare your own global variables here
+float g_SquareSide = 10;
+Point2f g_MouseClick = Point2f{ -10, -10 };
+Color4f g_Red = Color4f{ 1, 0, 0, 1 };
 
 // Declare your own functions here
 
 #pragma endregion ownDeclarations
+void DrawSquare();
 
 #pragma region gameFunctions											
 void Start();

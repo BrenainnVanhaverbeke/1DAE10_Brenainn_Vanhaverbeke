@@ -14,7 +14,7 @@ void Start()
 void Draw()
 {
 	ClearBackground();
-
+	DrawSquare();
 	// Put your own draw statements here
 
 }
@@ -49,7 +49,10 @@ void OnMouseMotionEvent(const SDL_MouseMotionEvent& e)
 
 void OnMouseDownEvent(const SDL_MouseButtonEvent& e)
 {
-	std::cout << "SDL_MOUSEBUTTONDOWN\n";
+	float x = e.x - (g_SquareSide / 2);
+	float y = (g_WindowHeight - e.y) - (g_SquareSide / 2);
+	g_MouseClick = Point2f{ x, y };// +(g_SquareSide / 2)};
+	/*std::cout << "SDL_MOUSEBUTTONDOWN\n";
 	std::cout << "\t[" << e.x << ", " << e.y << "]\n";
 	switch (e.button)
 	{
@@ -62,7 +65,7 @@ void OnMouseDownEvent(const SDL_MouseButtonEvent& e)
 	default:
 		break;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 }
 
 void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
@@ -73,5 +76,11 @@ void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 
 #pragma region ownDefinitions
 // Define your own functions here
+
+void DrawSquare()
+{
+	SetColor(g_Red);
+	FillRect(g_MouseClick, 10, 10);
+}
 
 #pragma endregion ownDefinitions
