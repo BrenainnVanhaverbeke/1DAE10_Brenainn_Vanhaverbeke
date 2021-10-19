@@ -13,32 +13,39 @@ float g_WindowHeight{ 300 };
 
 #pragma region ownDeclarations
 // Declare your own global variables here
-bool g_RectangleClicked{ false };
-bool g_RectangleRunning{ false };
-bool g_FlipStartLineX{ false };
-bool g_FlipStartLineY{ false };
-bool g_FlipEndLineX{ false };
-bool g_FlipEndLineY{ false };
+bool g_IsRectangleClicked{ false };
+bool g_IsRectangleRunning{ false };
+bool g_IsLineBouncing{ true };
+float g_DefaultSpeed{ 5 };
 
-Rectf g_Rectangle;
-Rectf g_BackupRectangle;
+Rectf g_Rectangle{};
+Rectf g_BackupRectangle{};
 
-Point2f g_StartLine;
-Point2f g_EndLine;
+Point2f g_StartPoint{};
+Point2f g_StartPointSpeed{};
+Point2f g_EndPoint{};
+Point2f g_EndPointSpeed{};
 
 Color4f g_Grey(0.56f, 0.61f, 0.62f, 1);
 Color4f g_Green(0, 1, 0, 1);
+Color4f g_LineColour{};
 // Declare your own functions here
 
 void RectangleSetup();
 void LineSetup();
 void DrawRectangle();
+void DrawBouncingLine();
 float GenerateRandomFloat(float min, float range);
 bool IsClickInRectangle(float x, float y);
-void ClickRectangleEvents(SDL_MouseButtonEvent e);
 void RunningRectangleUpdate();
+void BouncingLineUpdate();
 void RunningRectangleEvents(SDL_Keycode key);
+void BouncingLineEvents(SDL_Keycode key);
+void ClickRectangleEvents(SDL_MouseButtonEvent e);
+float AngleToRadians(float angle);
 Rectf GenerateRectangle();
+Point2f GetSpeedFromRadian(float speed, float radian);
+Color4f GenerateRandomColour();
 
 #pragma endregion ownDeclarations
 
