@@ -2,7 +2,7 @@
 using namespace utils;
 #pragma region gameInformation
 // Set your name and group in the title here
-std::string g_WindowTitle{ "Project name - Name, firstname - 1DAExx" };
+std::string g_WindowTitle{ "SDL Events - Vanhaverbeke, Brenainn - 1DAE10" };
 
 // Change the window dimensions here
 float g_WindowWidth{ 500 };
