@@ -9,29 +9,19 @@
 void Start()
 {
 	g_Rectangle = GenerateRectangle();
+	g_BackupRectangle = g_BackupRectangle = g_Rectangle;
+	g_BackupRectangle.left -= g_WindowWidth;
 }
 
 void Draw()
 {
 	ClearBackground();
 	DrawRectangle();
-
 }
 
 void Update(float elapsedSec)
 {
-	// process input, do physics 
-
-	// e.g. Check keyboard state
-	//const Uint8 *pStates = SDL_GetKeyboardState( nullptr );
-	//if ( pStates[SDL_SCANCODE_RIGHT] )
-	//{
-	//	std::cout << "Right arrow key is down\n";
-	//}
-	//if ( pStates[SDL_SCANCODE_LEFT] && pStates[SDL_SCANCODE_UP])
-	//{
-	//	std::cout << "Left and up arrow keys are down\n";
-	//}
+	RunningRectangleUpdate();
 }
 
 void End()
@@ -49,19 +39,19 @@ void OnKeyDownEvent(SDL_Keycode key)
 
 void OnKeyUpEvent(SDL_Keycode key)
 {
-	//switch (key)
-	//{
-	//case SDLK_LEFT:
-	//	//std::cout << "Left arrow key released\n";
-	//	break;
-	//case SDLK_RIGHT:
-	//	//std::cout << "Right arrow key released\n";
-	//	break;
-	//case SDLK_1:
-	//case SDLK_KP_1:
-	//	//std::cout << "Key 1 released\n";
-	//	break;
-	//}
+	switch (key)
+	{
+	case SDLK_r:
+		RunningRectangleEvents();
+		break;
+	case SDLK_RIGHT:
+		//std::cout << "Right arrow key released\n";
+		break;
+	case SDLK_1:
+	case SDLK_KP_1:
+		//std::cout << "Key 1 released\n";
+		break;
+	}
 }
 
 void OnMouseMotionEvent(const SDL_MouseMotionEvent& e)
@@ -82,15 +72,10 @@ void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 	{
 	case SDL_BUTTON_LEFT:
 	{
-		if (IsClickInRectangle((float)e.x, (float)e.y))
-		{
-			g_RectangleClicked = true;
-		}
+		ClickRectangleEvents(e);
 		break;
 	}
 	case SDL_BUTTON_RIGHT:
-		g_Rectangle = GenerateRectangle();
-		g_RectangleClicked = false;
 		break;
 	}
 }
@@ -124,6 +109,7 @@ void DrawRectangle()
 	else
 		SetColor(g_Grey);
 	FillRect(g_Rectangle);
+	FillRect(g_BackupRectangle);
 }
 
 float GenerateRandomFloat(float min, float max)
@@ -134,10 +120,50 @@ float GenerateRandomFloat(float min, float max)
 bool IsClickInRectangle(float mouseX, float mouseY)
 {
 	mouseY = g_WindowHeight - mouseY;
-	bool inRectangle{ g_Rectangle.left <= mouseX && mouseX <= g_Rectangle.width + g_Rectangle.left };
+	bool inRectangle{ g_Rectangle.left <= mouseX && mouseX <= g_Rectangle.width + g_Rectangle.left || g_BackupRectangle.left <= mouseX && mouseX <= g_BackupRectangle.width + g_BackupRectangle.left };
 	if (inRectangle)
-		inRectangle = g_Rectangle.bottom <= mouseY && mouseY <= g_Rectangle.height + g_Rectangle.bottom;
+		inRectangle = g_Rectangle.bottom <= mouseY && mouseY <= g_Rectangle.height + g_Rectangle.bottom || g_BackupRectangle.bottom <= mouseY && mouseY <= g_BackupRectangle.height + g_BackupRectangle.bottom;
 	return inRectangle;
+}
+
+void ClickRectangleEvents(SDL_MouseButtonEvent e)
+{
+	if (IsClickInRectangle((float)e.x, (float)e.y))
+	{
+		if (g_RectangleClicked)
+		{
+			g_Rectangle = GenerateRectangle();
+			g_BackupRectangle = g_Rectangle;
+			g_BackupRectangle.left -= g_WindowWidth;
+			g_RectangleClicked = false;
+		}
+		else
+		{
+			g_RectangleClicked = true;
+		}
+	}
+}
+
+void RunningRectangleUpdate()
+{
+	if (g_RectangleRunning)
+	{
+		g_Rectangle.left++;
+		g_BackupRectangle.left++;
+		if (g_WindowWidth <= g_Rectangle.left)
+		{
+			g_Rectangle = g_BackupRectangle;
+			g_BackupRectangle.left -= g_WindowWidth;
+		}
+	}
+}
+
+void RunningRectangleEvents()
+{
+	if (g_RectangleRunning)
+		g_RectangleRunning = false;
+	else
+		g_RectangleRunning = true;
 }
 
 #pragma endregion ownDefinitions

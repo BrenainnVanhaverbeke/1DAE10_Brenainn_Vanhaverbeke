@@ -14,8 +14,10 @@ float g_WindowHeight{ 300 };
 #pragma region ownDeclarations
 // Declare your own global variables here
 bool g_RectangleClicked{ false };
+bool g_RectangleRunning{ false };
 
 Rectf g_Rectangle;
+Rectf g_BackupRectangle;
 Color4f g_Grey(0.56f, 0.61f, 0.62f, 1);
 Color4f g_Green(0, 1, 0, 1);
 // Declare your own functions here
@@ -23,6 +25,9 @@ Color4f g_Green(0, 1, 0, 1);
 void DrawRectangle();
 float GenerateRandomFloat(float min, float range);
 bool IsClickInRectangle(float x, float y);
+void ClickRectangleEvents(SDL_MouseButtonEvent e);
+void RunningRectangleUpdate();
+void RunningRectangleEvents();
 Rectf GenerateRectangle();
 
 #pragma endregion ownDeclarations
