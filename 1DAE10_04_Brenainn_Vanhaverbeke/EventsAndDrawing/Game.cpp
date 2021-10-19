@@ -8,20 +8,60 @@
 #pragma region gameFunctions											
 void Start()
 {
-	g_Rectangle = GenerateRectangle();
-	g_BackupRectangle = g_BackupRectangle = g_Rectangle;
-	g_BackupRectangle.left -= g_WindowWidth;
+	//RectangleSetup();
+	LineSetup();
 }
 
 void Draw()
 {
 	ClearBackground();
-	DrawRectangle();
+	//DrawRectangle();
+	DrawLine(g_StartLine, g_EndLine);
 }
 
 void Update(float elapsedSec)
 {
-	RunningRectangleUpdate();
+	//RunningRectangleUpdate();
+	if (g_FlipEndLineX)
+	{
+		if (--g_EndLine.x <= 0)
+			g_FlipEndLineX = false;
+	}
+	else
+	{
+		if (g_WindowWidth <= ++g_EndLine.x)
+			g_FlipEndLineX = true;
+	}
+	if (g_FlipStartLineX)
+	{
+		if (--g_StartLine.x <= 0)
+			g_FlipStartLineX = false;
+	}
+	else
+	{
+		if (g_WindowWidth <= ++g_StartLine.x)
+			g_FlipStartLineX = true;
+	}
+	if (g_FlipEndLineY)
+	{
+		if (--g_EndLine.y <= 0)
+			g_FlipEndLineY = false;
+	}
+	else
+	{
+		if (g_WindowHeight <= ++g_EndLine.y)
+			g_FlipEndLineY = true;
+	}
+	if (g_FlipStartLineY)
+	{
+		if (--g_StartLine.y <= 0)
+			g_FlipStartLineY = false;
+	}
+	else
+	{
+		if (g_WindowHeight <= ++g_StartLine.y)
+			g_FlipStartLineY = true;
+	}
 }
 
 void End()
@@ -39,19 +79,7 @@ void OnKeyDownEvent(SDL_Keycode key)
 
 void OnKeyUpEvent(SDL_Keycode key)
 {
-	switch (key)
-	{
-	case SDLK_r:
-		RunningRectangleEvents();
-		break;
-	case SDLK_RIGHT:
-		//std::cout << "Right arrow key released\n";
-		break;
-	case SDLK_1:
-	case SDLK_KP_1:
-		//std::cout << "Key 1 released\n";
-		break;
-	}
+	//RunningRectangleEvents(key);
 }
 
 void OnMouseMotionEvent(const SDL_MouseMotionEvent& e)
@@ -67,22 +95,29 @@ void OnMouseDownEvent(const SDL_MouseButtonEvent& e)
 
 void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
-	//std::cout << "  [" << e.x << ", " << e.y << "]\n";
-	switch (e.button)
-	{
-	case SDL_BUTTON_LEFT:
-	{
-		ClickRectangleEvents(e);
-		break;
-	}
-	case SDL_BUTTON_RIGHT:
-		break;
-	}
+	//ClickRectangleEvents();
 }
 #pragma endregion inputHandling
 
 #pragma region ownDefinitions
 // Define your own functions here
+
+void RectangleSetup()
+{
+	g_Rectangle = GenerateRectangle();
+	g_BackupRectangle = g_BackupRectangle = g_Rectangle;
+	g_BackupRectangle.left -= g_WindowWidth;
+}
+
+void LineSetup()
+{
+	float startLineX = GenerateRandomFloat(0, g_WindowWidth);
+	float endLineX = GenerateRandomFloat(0, g_WindowWidth);
+	float startLineY = GenerateRandomFloat(0, g_WindowWidth);
+	float endLineY = GenerateRandomFloat(0, g_WindowWidth);
+	g_StartLine = Point2f{ startLineX, startLineY };
+	g_EndLine = Point2f{ endLineX, endLineY };
+}
 
 Rectf GenerateRectangle()
 {
@@ -128,18 +163,21 @@ bool IsClickInRectangle(float mouseX, float mouseY)
 
 void ClickRectangleEvents(SDL_MouseButtonEvent e)
 {
-	if (IsClickInRectangle((float)e.x, (float)e.y))
+	if (e.button == SDL_BUTTON_LEFT)
 	{
-		if (g_RectangleClicked)
+		if (IsClickInRectangle((float)e.x, (float)e.y))
 		{
-			g_Rectangle = GenerateRectangle();
-			g_BackupRectangle = g_Rectangle;
-			g_BackupRectangle.left -= g_WindowWidth;
-			g_RectangleClicked = false;
-		}
-		else
-		{
-			g_RectangleClicked = true;
+			if (g_RectangleClicked)
+			{
+				g_Rectangle = GenerateRectangle();
+				g_BackupRectangle = g_Rectangle;
+				g_BackupRectangle.left -= g_WindowWidth;
+				g_RectangleClicked = false;
+			}
+			else
+			{
+				g_RectangleClicked = true;
+			}
 		}
 	}
 }
@@ -158,12 +196,15 @@ void RunningRectangleUpdate()
 	}
 }
 
-void RunningRectangleEvents()
+void RunningRectangleEvents(SDL_Keycode key)
 {
-	if (g_RectangleRunning)
-		g_RectangleRunning = false;
-	else
-		g_RectangleRunning = true;
+	if (key == SDLK_r)
+	{
+		if (g_RectangleRunning)
+			g_RectangleRunning = false;
+		else
+			g_RectangleRunning = true;
+	}
 }
 
 #pragma endregion ownDefinitions
