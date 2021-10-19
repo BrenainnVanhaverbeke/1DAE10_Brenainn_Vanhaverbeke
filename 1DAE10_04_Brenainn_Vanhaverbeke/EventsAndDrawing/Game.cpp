@@ -2,19 +2,19 @@
 
 #include "pch.h"
 #include "Game.h"
+#include <iostream>
 
 //Basic game functions
 #pragma region gameFunctions											
 void Start()
 {
-	// initialize game resources here
+	g_Rectangle = GenerateRectangle();
 }
 
 void Draw()
 {
 	ClearBackground();
-
-	// Put your own draw statements here
+	DrawRectangle();
 
 }
 
@@ -77,26 +77,67 @@ void OnMouseDownEvent(const SDL_MouseButtonEvent& e)
 
 void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
-	////std::cout << "  [" << e.x << ", " << e.y << "]\n";
-	//switch (e.button)
-	//{
-	//case SDL_BUTTON_LEFT:
-	//{
-	//	//std::cout << "Left mouse button released\n";
-	//	//Point2f mousePos{ float( e.x ), float( g_WindowHeight - e.y ) };
-	//	break;
-	//}
-	//case SDL_BUTTON_RIGHT:
-	//	//std::cout << "Right mouse button released\n";
-	//	break;
-	//case SDL_BUTTON_MIDDLE:
-	//	//std::cout << "Middle mouse button released\n";
-	//	break;
-	//}
+	//std::cout << "  [" << e.x << ", " << e.y << "]\n";
+	switch (e.button)
+	{
+	case SDL_BUTTON_LEFT:
+	{
+		if (IsClickInRectangle((float)e.x, (float)e.y))
+		{
+			g_RectangleClicked = true;
+		}
+		break;
+	}
+	case SDL_BUTTON_RIGHT:
+		g_Rectangle = GenerateRectangle();
+		g_RectangleClicked = false;
+		break;
+	}
 }
 #pragma endregion inputHandling
 
 #pragma region ownDefinitions
 // Define your own functions here
+
+Rectf GenerateRectangle()
+{
+	float border{ 50 };
+	float minimumWidth{ 60 };
+	float minimumHeight{ 40 };
+	float minX{ border };
+	float maxX{ g_WindowWidth - minimumWidth - border };
+	float minY{ border };
+	float maxY{ g_WindowHeight - minimumHeight - border };
+	float randomLeft{ GenerateRandomFloat(minX, maxX - minX) };
+	float randomBottom{ GenerateRandomFloat(minY, maxY - minY) };
+	float maxWidth{ maxX - randomLeft };
+	float maxHeight{ maxY - randomBottom };
+	float randomWidth{ GenerateRandomFloat(minimumWidth, maxWidth) };
+	float randomHeight{ GenerateRandomFloat(minimumHeight, maxHeight) };
+	return Rectf{ randomLeft, randomBottom, randomWidth, randomHeight };
+}
+
+void DrawRectangle()
+{
+	if (g_RectangleClicked)
+		SetColor(g_Green);
+	else
+		SetColor(g_Grey);
+	FillRect(g_Rectangle);
+}
+
+float GenerateRandomFloat(float min, float max)
+{
+	return (float)((rand() % (int)max) + min);
+}
+
+bool IsClickInRectangle(float mouseX, float mouseY)
+{
+	mouseY = g_WindowHeight - mouseY;
+	bool inRectangle{ g_Rectangle.left <= mouseX && mouseX <= g_Rectangle.width + g_Rectangle.left };
+	if (inRectangle)
+		inRectangle = g_Rectangle.bottom <= mouseY && mouseY <= g_Rectangle.height + g_Rectangle.bottom;
+	return inRectangle;
+}
 
 #pragma endregion ownDefinitions
