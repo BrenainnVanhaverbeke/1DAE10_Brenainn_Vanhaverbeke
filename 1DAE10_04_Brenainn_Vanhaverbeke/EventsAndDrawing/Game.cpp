@@ -14,13 +14,17 @@ void Start()
 
 void Draw()
 {
-	ClearBackground(0, 0, 0);
+	if (g_NumberOfFrames % 15 == 0)
+	{
+		ClearBackground(0, 0, 0);
+	}
 	//DrawRectangle();
 	DrawBouncingLine();
 }
 
 void Update(float elapsedSec)
 {
+	g_NumberOfFrames++;
 	//RunningRectangleUpdate();
 	BouncingLineUpdate();
 }
@@ -51,6 +55,7 @@ void OnMouseDownEvent(const SDL_MouseButtonEvent& e) {}
 void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
 	//ClickRectangleEvents();
+	LineSetup();
 }
 #pragma endregion inputHandling
 

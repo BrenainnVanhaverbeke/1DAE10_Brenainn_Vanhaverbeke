@@ -13,6 +13,7 @@ float g_WindowHeight{ 300 };
 
 #pragma region ownDeclarations
 // Declare your own global variables here
+unsigned int g_NumberOfFrames{ 0 };
 bool g_IsRectangleClicked{ false };
 bool g_IsRectangleRunning{ false };
 bool g_IsLineBouncing{ true };
