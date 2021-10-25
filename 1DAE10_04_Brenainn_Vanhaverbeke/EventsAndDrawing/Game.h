@@ -44,7 +44,8 @@ void RunningRectangleEvents(SDL_Keycode key);
 void BouncingLineEvents(SDL_Keycode key);
 void ClickRectangleEvents(SDL_MouseButtonEvent e);
 float AngleToRadians(float angle);
-Rectf GenerateRectangle();
+
+Rectf GenerateRectangle(float border = 50, float minimumWidth = 60, float minimumHeight = 40);
 Point2f GetSpeedFromRadian(float speed, float radian);
 Color4f GenerateRandomColour();
 

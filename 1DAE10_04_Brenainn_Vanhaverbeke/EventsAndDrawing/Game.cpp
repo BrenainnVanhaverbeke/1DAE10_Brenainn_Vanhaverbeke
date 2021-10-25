@@ -8,24 +8,22 @@
 #pragma region gameFunctions											
 void Start()
 {
-	//RectangleSetup();
+	RectangleSetup();
 	LineSetup();
 }
 
 void Draw()
 {
-	if (g_NumberOfFrames % 15 == 0)
-	{
+	//if (g_NumberOfFrames % 15 == 0)
 		ClearBackground(0, 0, 0);
-	}
-	//DrawRectangle();
+	DrawRectangle();
 	DrawBouncingLine();
 }
 
 void Update(float elapsedSec)
 {
 	g_NumberOfFrames++;
-	//RunningRectangleUpdate();
+	RunningRectangleUpdate();
 	BouncingLineUpdate();
 }
 
@@ -54,7 +52,7 @@ void OnMouseDownEvent(const SDL_MouseButtonEvent& e) {}
 
 void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 {
-	//ClickRectangleEvents();
+	ClickRectangleEvents(e);
 	LineSetup();
 }
 #pragma endregion inputHandling
@@ -205,11 +203,8 @@ Point2f GetSpeedFromRadian(float speed, float radian)
 	return Point2f(x, y);
 }
 
-Rectf GenerateRectangle()
+Rectf GenerateRectangle(float border, float minimumWidth, float minimumHeight)
 {
-	float border{ 50 };
-	float minimumWidth{ 60 };
-	float minimumHeight{ 40 };
 	float minX{ border };
 	float maxX{ g_WindowWidth - minimumWidth - border };
 	float minY{ border };
