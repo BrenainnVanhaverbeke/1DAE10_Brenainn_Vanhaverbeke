@@ -14,7 +14,7 @@ void Draw()
 {
 	ClearBackground();
 	DrawPolygonShape(0, 0, 10);
-	DrawBezier(1, 0);
+	DrawCrosier(1, 0, 8);
 }
 
 void Update(float elapsedSec)
@@ -103,9 +103,11 @@ void DrawPolygonShape(int column, int row, int sides)
 	Point2f center{ Point2f(GetOffsetX(column) + g_DefaultWidth / 2, GetOffsetY(row) + g_DefaultHeight / 2) };
 	float nthOfCircle{ 360.0f / (float)sides };
 	float radius{ g_DefaultHeight / 3 };
+	float radiusOffset{ 0 };
 	float radian{};
 	for (int i = 0; i < sides; i++)
 	{
+		radiusOffset = (float)((int)(radiusOffset + 5) % 25);
 		radian = DegreesToRadian(nthOfCircle * i);
 		Point2f start = GetCoordinatesFromRadian(radius, radian, center.x, center.y);
 		radian = DegreesToRadian(nthOfCircle * (i + 1));
@@ -115,9 +117,18 @@ void DrawPolygonShape(int column, int row, int sides)
 	}
 }
 
-void DrawBezier()
+void DrawCrosier(int column, int row, int windings)
 {
-
+	Point2f center{ Point2f(GetOffsetX(column) + g_DefaultWidth / 2, GetOffsetY(row) + g_DefaultHeight / 2) };
+	DrawArc(center, 10, 10, 0, 2 * g_Pi);
+	float a{ g_WindowWidth / 4 };
+	float theta{ 0.01f };
+	float r{};
+	for (int b{ 0 }; b < windings; b++)
+	{
+		r = a / sqrtf(theta);
+		theta += 0.01f;
+	}
 }
 
 float GetOffsetX(int nthElement)

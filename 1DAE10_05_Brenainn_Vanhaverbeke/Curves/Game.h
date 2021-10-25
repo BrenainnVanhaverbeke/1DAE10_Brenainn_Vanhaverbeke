@@ -25,7 +25,7 @@ const Color4f g_Red{ 1,0,0,1 };
 // Declare your own functions here
 
 void DrawPolygonShape(int column, int row, int sides);
-void DrawBezier();
+void DrawCrosier(int column, int row, int windings);
 
 float GetOffsetX(int nthElement);
 float GetOffsetY(int nthElement);
