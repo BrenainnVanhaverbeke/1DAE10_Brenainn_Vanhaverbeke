@@ -100,8 +100,11 @@ void ExamScores()
 		}
 		else
 		{
-			inputString.pop_back();
-			inputString.pop_back();
+			if (2 < sizeof(inputString))
+			{
+				inputString.pop_back();
+				inputString.pop_back();
+			}
 			validInput = false;
 		}
 	} while (input != -1);
@@ -157,7 +160,7 @@ void AsciiTable()
 	int letterOffset{ 13 };
 	for (int i{ 0 }; i < letterOffset; i++)
 	{
-		int asciiOffset{ 97};
+		int asciiOffset{ 97 };
 		char firstLetter{ (char)(asciiOffset + i) };
 		char secondLetter{ (char)((int)firstLetter + letterOffset) };
 		std::cout << std::setw(2) << firstLetter << std::setw(8) << (int)firstLetter;
