@@ -13,8 +13,9 @@ void Start()
 void Draw()
 {
 	ClearBackground();
-	DrawPolygonShape(0, 0, 10);
-	DrawCrosier(1, 0, 8);
+
+	// Put your own draw statements here
+
 }
 
 void Update(float elapsedSec)
@@ -97,66 +98,5 @@ void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 
 #pragma region ownDefinitions
 // Define your own functions here
-
-void DrawPolygonShape(int column, int row, int sides)
-{
-	Point2f center{ Point2f(GetOffsetX(column) + g_DefaultWidth / 2, GetOffsetY(row) + g_DefaultHeight / 2) };
-	float nthOfCircle{ 360.0f / (float)sides };
-	float radius{ g_DefaultHeight / 3 };
-	float radiusOffset{ 0 };
-	float radian{};
-	for (int i = 0; i < sides; i++)
-	{
-		radiusOffset = (float)((int)(radiusOffset + 5) % 25);
-		radian = DegreesToRadian(nthOfCircle * i);
-		Point2f start = GetCoordinatesFromRadian(radius, radian, center.x, center.y);
-		radian = DegreesToRadian(nthOfCircle * (i + 1));
-		Point2f end = GetCoordinatesFromRadian(radius, radian, center.x, center.y);
-		SetColor(g_Red);
-		DrawLine(start, end);
-	}
-}
-
-void DrawCrosier(int column, int row, int windings)
-{
-	Point2f center{ Point2f(GetOffsetX(column) + g_DefaultWidth / 2, GetOffsetY(row) + g_DefaultHeight / 2) };
-	float windingX{};
-	float windingY{};
-	float a{ g_WindowWidth / 4 };
-	float theta{ g_Pi / 2 };
-	float endAngle{ (windings * 2 * g_Pi) + (g_Pi / 2) };
-	float angleSteps { 0.01f };
-	float r{};
-	for (float theta{ g_Pi / 2 }; theta < endAngle; theta += angleSteps)
-	{
-		r = a / sqrtf(theta);
-		windingX = center.x + (r * cosf(theta));
-		windingY = center.y + (r * sinf(theta));
-		DrawLine(windingX, windingY, windingX + 1, windingY + 1);
-	}
-}
-
-float GetOffsetX(int nthElement)
-{
-	float offset = g_DefaultOffset * (nthElement + 1) + (nthElement * g_DefaultWidth);
-	return offset;
-}
-
-float GetOffsetY(int nthElement)
-{
-	return g_DefaultOffset * (nthElement + 1) + (nthElement * g_DefaultHeight);
-}
-
-float DegreesToRadian(float degrees)
-{
-	return degrees * (g_Pi / 180);
-}
-
-Point2f GetCoordinatesFromRadian(float radius, float radian, float xOffset, float yOffset)
-{
-	float x = radius * cosf(radian);
-	float y = radius * sinf(radian);
-	return Point2f(x + xOffset, y + yOffset);
-}
 
 #pragma endregion ownDefinitions
