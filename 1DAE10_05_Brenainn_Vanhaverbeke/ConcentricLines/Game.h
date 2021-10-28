@@ -5,8 +5,8 @@ using namespace utils;
 std::string g_WindowTitle{ "Concentric Lines - Vanhaverbeke, Brenainn - 1DAE10" };
 
 // Change the window dimensions here
-float g_WindowWidth{ 540 };
-float g_WindowHeight{ 270 };
+float g_WindowWidth{ 630 };
+float g_WindowHeight{ 360 };
 #pragma endregion gameInformation
 
 
@@ -18,15 +18,21 @@ enum Colour
 {
 	red,
 	green,
-	blue
+	blue,
+	numberOfColours
 };
 
+float g_LineStep{ 9 };
+
 Colour g_Colour { red };
+Point2f g_MousePosition{};
 
 
 // Declare your own functions here
 
 void DrawLines();
+void DrawVerticalLines();
+void DrawHorizontalLines();
 
 Color4f GetCurrentColour();
 

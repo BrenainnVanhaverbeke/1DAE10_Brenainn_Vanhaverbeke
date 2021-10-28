@@ -7,7 +7,6 @@
 #pragma region gameFunctions											
 void Start()
 {
-	// initialize game resources here
 }
 
 void Draw()
@@ -18,23 +17,10 @@ void Draw()
 
 void Update(float elapsedSec)
 {
-	// process input, do physics 
-
-	// e.g. Check keyboard state
-	//const Uint8 *pStates = SDL_GetKeyboardState( nullptr );
-	//if ( pStates[SDL_SCANCODE_RIGHT] )
-	//{
-	//	std::cout << "Right arrow key is down\n";
-	//}
-	//if ( pStates[SDL_SCANCODE_LEFT] && pStates[SDL_SCANCODE_UP])
-	//{
-	//	std::cout << "Left and up arrow keys are down\n";
-	//}
 }
 
 void End()
 {
-	// free game resources here
 }
 #pragma endregion gameFunctions
 
@@ -47,25 +33,17 @@ void OnKeyDownEvent(SDL_Keycode key)
 
 void OnKeyUpEvent(SDL_Keycode key)
 {
-	//switch (key)
-	//{
-	//case SDLK_LEFT:
-	//	//std::cout << "Left arrow key released\n";
-	//	break;
-	//case SDLK_RIGHT:
-	//	//std::cout << "Right arrow key released\n";
-	//	break;
-	//case SDLK_1:
-	//case SDLK_KP_1:
-	//	//std::cout << "Key 1 released\n";
-	//	break;
-	//}
+	switch (key)
+	{
+	case SDLK_RIGHT:
+		g_Colour =  Colour((int)((g_Colour + 1) % (int)Colour::numberOfColours));
+		break;
+	}
 }
 
 void OnMouseMotionEvent(const SDL_MouseMotionEvent& e)
 {
-	//std::cout << "  [" << e.x << ", " << e.y << "]\n";
-	//Point2f mousePos{ float( e.x ), float( g_WindowHeight - e.y ) };
+	g_MousePosition = Point2f{ (float)e.x, g_WindowHeight - (float)e.y };
 }
 
 void OnMouseDownEvent(const SDL_MouseButtonEvent& e)
@@ -100,6 +78,33 @@ void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 void DrawLines()
 {
 	SetColor(GetCurrentColour());
+	DrawVerticalLines();
+	DrawHorizontalLines();
+
+}
+
+void DrawVerticalLines()
+{
+	Point2f lineStart{};
+	for (int i{ 0 }; i <= g_WindowWidth / g_LineStep; i++)
+	{
+		lineStart = Point2f{ i * g_LineStep, 0 };
+		DrawLine(lineStart, g_MousePosition);
+		lineStart.y += g_WindowHeight;
+		DrawLine(lineStart, g_MousePosition);
+	}
+}
+
+void DrawHorizontalLines()
+{
+	Point2f lineStart{};
+	for (int i{ 0 }; i <= g_WindowHeight / g_LineStep; i++)
+	{
+		lineStart = Point2f{ 0, i * g_LineStep };
+		DrawLine(lineStart, g_MousePosition);
+		lineStart.x += g_WindowWidth;
+		DrawLine(lineStart, g_MousePosition);
+	}
 }
 
 Color4f GetCurrentColour()
@@ -107,11 +112,13 @@ Color4f GetCurrentColour()
 	switch (g_Colour)
 	{
 	case red:
-		return Color4f{ 1, 0, 0, 1 };
+		return Color4f{ 1.0f, 0.0f, 0.0f, 1.0f };
 	case green:
-		return Color4f{ 0, 1, 0, 1 };
+		return Color4f{ 0.0f, 1.0f, 0.0f, 1.0f };
 	case blue:
-		return Color4f{ 0, 0, 1, 1 };
+		return Color4f{ 0.0f, 0.0f, 1.0f, 1.0f };
+	default:
+		return Color4f{ 0.0f, 0.0f, 0.0f, 0.0f };
 	}
 }
 
