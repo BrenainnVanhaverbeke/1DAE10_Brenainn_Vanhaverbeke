@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "Game.h"
+#include <iostream>
 
 //Basic game functions
 #pragma region gameFunctions											
@@ -39,25 +40,22 @@ void OnKeyDownEvent(SDL_Keycode key)
 
 void OnKeyUpEvent(SDL_Keycode key)
 {
-	//switch (key)
-	//{
-	//case SDLK_LEFT:
-	//	//std::cout << "Left arrow key released\n";
-	//	break;
-	//case SDLK_RIGHT:
-	//	//std::cout << "Right arrow key released\n";
-	//	break;
-	//case SDLK_1:
-	//case SDLK_KP_1:
-	//	//std::cout << "Key 1 released\n";
-	//	break;
-	//}
+	switch (key)
+	{
+	case SDLK_UP:
+		if (g_Iterations < 20)
+			g_Iterations++;
+		break;
+	case SDLK_DOWN:
+		if (5 < g_Iterations)
+			g_Iterations--;
+		break;
+	}
+	std::cout << g_Iterations << std::endl;
 }
 
 void OnMouseMotionEvent(const SDL_MouseMotionEvent& e)
 {
-	//std::cout << "  [" << e.x << ", " << e.y << "]\n";
-	//Point2f mousePos{ float( e.x ), float( g_WindowHeight - e.y ) };
 }
 
 void OnMouseDownEvent(const SDL_MouseButtonEvent& e)
