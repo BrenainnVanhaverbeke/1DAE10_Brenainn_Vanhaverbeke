@@ -20,12 +20,14 @@ void Update(float elapsedSec)
 {
 	for (int i = 0; i < sizeof(g_MatchPositions) / sizeof(g_MatchPositions[0]); i++)
 	{
-		Point2f match = g_MatchPositions[i];
-		Point2f speed = g_MatchSpeed[i];
+		Point2f match{ g_MatchPositions[i] };
+		Point2f speed{ g_MatchSpeed[i] };
 		Point2f destination = g_MatchDestinations[i];
 		match.x += speed.x;
 		match.y += speed.y;
-		if (match.x - destination.x < 0 || match.y - destination.y < 0)
+		float differenceX{ match.x - destination.x };
+		float differenceY{ match.y - destination.y };
+		if (match.y - destination.y < 0)
 		{
 			speed = Point2f{ 0.f, 0.f };
 			match = destination;
@@ -111,8 +113,8 @@ void HandlePlayerMove(int amountToDraw)
 		g_PlayerMatchesPool += amountToDraw;
 		g_PlayerMoves += std::to_string(amountToDraw) + " ";
 		g_PlayerVictory = g_MatchesPool == 0;
-		//if (!g_PlayerVictory)
-			//HandleComputerMove();
+		if (!g_PlayerVictory)
+			HandleComputerMove();
 	}
 }
 
@@ -123,11 +125,12 @@ void HandleComputerMove()
 	{
 		amountToDraw = GenerateRandomInt(1, 3);
 	} while (g_MatchesPool < amountToDraw);
+	std::cout << "Drawing " << amountToDraw << " matches.\n";
+	CalculateMatchSpeeds(amountToDraw, g_PlayerMatchesPool, g_WindowWidth / 2.0f + g_Border, g_Border);
 	g_MatchesPool -= amountToDraw;
 	g_ComputerMatchesPool += amountToDraw;
 	g_ComputerMoves += std::to_string(amountToDraw) + " ";
 	g_ComputerVictory = g_MatchesPool == 0;
-	g_IsAnimating = true;
 }
 
 void HandleVictory()
@@ -147,7 +150,7 @@ void CalculateMatchSpeeds(int amountOfMatches, int totalMatches, float offsetX, 
 {
 	for (int i{ 0 }; i < amountOfMatches; i++)
 	{
-		int index = g_MatchesPool - i - 1;
+		int index = (g_MatchesPool - amountOfMatches) + i;
 		Point2f currentMatch = g_MatchPositions[index];
 		Point2f matchDestination = CalculateMatchPosition(i + totalMatches, offsetX, offsetY);
 		float differenceX = currentMatch.x - matchDestination.x;
