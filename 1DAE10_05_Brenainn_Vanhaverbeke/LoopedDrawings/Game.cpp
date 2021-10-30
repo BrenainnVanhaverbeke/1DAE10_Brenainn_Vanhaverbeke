@@ -110,12 +110,12 @@ void DrawSpiral(int column, int row, int iterations)
 	iterations *= 4;
 	float offsetX{ GetOffsetX(column) };
 	float offsetY{ GetOffsetY(row) };
-	float lineReduction{ g_DefaultHeight / iterations };
+	float lineReduction{ g_DefaultHeight / iterations};
 	float lineLength{ g_DefaultHeight };
 	Point2f lineStart{ offsetX, offsetY };
 	Point2f lineEnd{ lineStart };
 	SetColor(g_SpiralColour);
-	for (int i = 0; i < iterations - 1; i++)
+	for (int i = 0; i < iterations; i++)
 	{
 		if (i % 4 == 0)
 			lineEnd.x += lineLength;
@@ -127,7 +127,7 @@ void DrawSpiral(int column, int row, int iterations)
 			lineEnd.y -= lineLength;
 		DrawLine(lineStart, lineEnd, g_LineThickness);
 		lineStart = lineEnd;
-		lineLength -= lineReduction;
+			lineLength -= lineReduction;
 	}
 }
 
@@ -142,7 +142,7 @@ void DrawSpinningLines(int column, int row, int iterations)
 	Point2f greenLineEnd{ offsetX + g_DefaultWidth, offsetY + g_DefaultHeight };
 	Point2f blueLineStart{ offsetX + g_DefaultWidth, offsetY + g_DefaultHeight };
 	Point2f blueLineEnd{ offsetX, offsetY + g_DefaultHeight };
-	Point2f yellowLineStart{ offsetX, offsetY + g_DefaultHeight};
+	Point2f yellowLineStart{ offsetX, offsetY + g_DefaultHeight };
 	Point2f yellowLineEnd{ offsetX, offsetY };
 	for (int i = 0; i < iterations; i++)
 	{

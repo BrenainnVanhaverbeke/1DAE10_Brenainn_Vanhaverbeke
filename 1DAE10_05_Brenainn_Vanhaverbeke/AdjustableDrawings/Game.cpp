@@ -113,7 +113,7 @@ void DrawSpiral(int column, int row, int iterations)
 	Point2f lineStart{ offsetX, offsetY };
 	Point2f lineEnd{ lineStart };
 	SetColor(g_SpiralColour);
-	for (int i = 0; i < iterations - 1; i++)
+	for (int i = 0; i < iterations; i++)
 	{
 		if (i % 4 == 0)
 			lineEnd.x += lineLength;
