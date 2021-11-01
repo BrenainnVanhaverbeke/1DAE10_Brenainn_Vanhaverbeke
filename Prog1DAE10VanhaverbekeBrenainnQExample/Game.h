@@ -14,6 +14,8 @@ float g_WindowHeight{ 300 };
 #pragma region ownDeclarations
 // Declare your own global variables here
 
+const float g_Border{ 30.0f };
+
 int g_Even{};
 int g_Odd{};
 int g_Any{};

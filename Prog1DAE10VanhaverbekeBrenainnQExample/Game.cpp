@@ -85,9 +85,9 @@ void PrintRandomNumbers()
 	printf("Even: %i, odd: %i, any: %i\n", g_Even, g_Odd, g_Any);
 }
 
-int GenerateRandomNumber(int min, int max)
+int GenerateRandomNumber(int min, int amountOfNumbers)
 {
-	return (rand() % max) + min;
+	return (rand() % amountOfNumbers) + min;
 }
 
 #pragma endregion ownDefinitions
