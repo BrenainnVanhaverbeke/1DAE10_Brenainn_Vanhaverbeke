@@ -14,19 +14,44 @@ float g_WindowHeight{ 300 };
 #pragma region ownDeclarations
 // Declare your own global variables here
 
-const float g_Border{ 30.0f };
+enum ElevatorState
+{
+	ELEVATOR_MOVING_UP,
+	ELEVATOR_MOVING_DOWN,
+};
 
-int g_Even{};
-int g_Odd{};
-int g_Any{};
-float g_TotalElapsedTime{};
+const float g_Border{ 30.0f };
+const float g_WallThickness{ 10.0f };
+const float g_ElevatorWidth{ 40.0f };
+const float g_ElevatorHeight{ 60.0f };
+const float g_ElevatorSpeed{ 100.0f };
+
+const Color4f g_Red{ 1.0f, 0.0f, 0.0f, 1.0f };
+const Color4f g_Green{ 0.0f, 1.0f, 0.0f, 1.0f };
+const Color4f g_Blue{ 0.0f, 0.0f, 1.0f, 1.0f };
+const Color4f g_Grey{ 0.5f, 0.5f, 0.5f, 1.0f };
+
+int g_Even{ 0 };
+int g_Odd{ 0 };
+int g_Any{ 0 };
+float g_TotalElapsedTime{ 0.0f };
+bool g_IsElevatorMoving{};
+
+Rectf g_Elevator{};
+Rectf g_ElevatorInterior{};
+ElevatorState g_ElevatorState{};
 
 // Declare your own functions here
 
 void Generate();
 void PrintRandomNumbers();
+void InitialiseElevator();
+void DrawElevator();
+void CheckElevatorDirection();
 
 int GenerateRandomNumber(int min, int max);
+float GetElevatorSpeed(float elapsedSec, ElevatorState elevatorState);
+Color4f GetElevatorInteriorColour(ElevatorState elevatorState);
 
 #pragma endregion ownDeclarations
 
