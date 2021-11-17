@@ -16,6 +16,8 @@ void Draw()
 	DrawSquares();
 	DrawEquilateralTriangles();
 	DrawPentagrams();
+	DrawLinearGradients();
+	DrawDotGrids();
 }
 
 void Update(float elapsedSec) {}
@@ -85,30 +87,52 @@ void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 void DrawSquares()
 {
 	SetColor(g_White);
-	DrawSquare(Point2f{ 20, 200 }, 80, 10);
-	DrawSquare(Point2f{ 120, 200 }, 60, 5);
-	DrawSquare(Point2f{ 190, 200 }, 40, 3);
+	DrawSquare(Point2f{ 20, 300 }, 80, 10);
+	DrawSquare(Point2f{ 120, 300 }, 60, 5);
+	DrawSquare(Point2f{ 190, 300 }, 40, 3);
 }
 
 void DrawEquilateralTriangles()
 {
 	DrawConcentricTriangles();
-	DrawSierpinskiTriangle(Point2f{ 350, 200 }, 80);
+	DrawSierpinskiTriangle(Point2f{ 350, 300 }, 80);
+	//DrawSierpinskiTriangle(Point2f{ (g_WindowWidth - g_WindowHeight) / 2, 10 }, g_WindowHeight);
 }
 
 void DrawPentagrams()
 {
+	SetColor(g_Blue);
+	DrawPentagram(Point2f{ 350, 265 }, 30);
+	SetColor(g_Red);
+	DrawPentagram(Point2f{ 400, 265 }, 15);
+}
 
+void DrawLinearGradients()
+{
+	DrawLinearGradient(Point2f{ 20, 270 }, Rectf{ 0, 0, 100, 15 }, g_Black, g_White);
+	DrawLinearGradient(Point2f{ 20, 240 }, Rectf{ 0, 0, 150, 20 }, g_Green, g_Red);
+	DrawLinearGradient(Point2f{ 20, 200 }, Rectf{ 0, 0, 200, 30 }, Color4f{ 0.7f, 0.4f, 1.0f, 1.0f }, Color4f{ 1.0f, 0.4f, 0.7f, 1.0f });
+	DrawLinearGradient(Point2f{ 20, 150 }, Rectf{ 0, 0, 300, 40 }, g_Red, g_Black);
 }
 
 void DrawConcentricTriangles()
 {
 	SetColor(g_Red);
-	DrawEquilateralTriangle(Point2f{ 250, 200 }, 80, true);
+	DrawEquilateralTriangle(Point2f{ 250, 300 }, 80, true);
 	SetColor(g_Green);
-	DrawEquilateralTriangle(Point2f{ 260, 205 }, 60, true);
+	DrawEquilateralTriangle(Point2f{ 260, 305 }, 60, true);
 	SetColor(g_Blue);
-	DrawEquilateralTriangle(Point2f{ 270, 210 }, 40, true);
+	DrawEquilateralTriangle(Point2f{ 270, 310 }, 40, true);
+}
+
+void DrawDotGrids()
+{
+	SetColor(g_Red);
+	DrawDotGrid(Point2f{ 10, 10 }, 20, 5, 3, 5);
+	SetColor(g_Green);
+	DrawDotGrid(Point2f{ 250, 50 }, 15, 7, 2, 3);
+	SetColor(g_Blue);
+	DrawDotGrid(Point2f{ 260, 60 }, 5, 7, 2, 23);
 }
 
 void DrawSquare(Point2f position, float size, float amountOfSquares)
@@ -151,7 +175,40 @@ void DrawPentagram(Point2f position, float size)
 	float offset{ (360 / 5) * 2 };
 	for (int i = 0; i < 5; i++)
 	{
+		Point2f startLine{ GetCoordinatesFromRadians(size, ConvertDegreesToRadians(offset * i), position) };
+		Point2f endLine{ GetCoordinatesFromRadians(size, ConvertDegreesToRadians(offset * (i + 1)), position) };
+		DrawLine(startLine, endLine);
+	}
+}
 
+void DrawLinearGradient(Point2f position, Rectf size, Color4f colourLeft, Color4f colourRight)
+{
+	float colourShift{ 1.0f / size.width };
+	colourRight.a = 0;
+	for (int i = 1; i < size.width; i++)
+	{
+		Point2f startLine{ position.x + i, position.y };
+		Point2f endLine{ position.x + i, position.y + size.height };
+		SetColor(colourLeft);
+		DrawLine(startLine, endLine);
+		SetColor(colourRight);
+		DrawLine(startLine, endLine);
+		colourLeft.a -= colourShift;
+		colourRight.a += colourShift;
+	}
+}
+
+void DrawDotGrid(Point2f basePosition, float radius, float columns, float rows, float offset)
+{
+	basePosition.x += radius;
+	basePosition.y += radius;
+	offset = radius * 2 + offset;
+	for (int row = 0; row < rows; row++)
+	{
+		for (int column = 0; column < columns; column++)
+		{
+			FillEllipse(basePosition.x + (offset * column), basePosition.y + (offset * row), radius, radius);
+		}
 	}
 }
 

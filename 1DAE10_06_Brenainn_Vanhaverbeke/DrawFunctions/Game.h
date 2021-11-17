@@ -6,7 +6,7 @@ std::string g_WindowTitle{ "Draw Functions - Vanhaverbeke, Brenainn - 1DAE10" };
 
 // Change the window dimensions here
 float g_WindowWidth{ 500 };
-float g_WindowHeight{ 300 };
+float g_WindowHeight{ 400 };
 #pragma endregion gameInformation
 
 
@@ -24,11 +24,15 @@ void DrawSquares();
 void DrawEquilateralTriangles();
 void DrawConcentricTriangles();
 void DrawPentagrams();
+void DrawLinearGradients();
+void DrawDotGrids();
 
 void DrawSquare(Point2f position, float size, float amountOfSquares);
 void DrawEquilateralTriangle(Point2f position, float size, bool isFilled);
 void DrawSierpinskiTriangle(Point2f position, float size);
 void DrawPentagram(Point2f position, float size);
+void DrawLinearGradient(Point2f position, Rectf size, Color4f colourLeft, Color4f colourRight);
+void DrawDotGrid(Point2f basePosition, float radius, float width, float height, float offset);
 
 float ConvertDegreesToRadians(float degrees);
 Point2f GetCoordinatesFromRadians(float radius, float radians, Point2f offset);
