@@ -18,6 +18,7 @@ void Draw()
 	DrawPentagrams();
 	DrawLinearGradients();
 	DrawDotGrids();
+	//DrawSierpinskiTriangle(Point2f{ (g_WindowWidth - g_WindowHeight) / 2, 10 }, g_WindowHeight);
 }
 
 void Update(float elapsedSec) {}
@@ -95,8 +96,8 @@ void DrawSquares()
 void DrawEquilateralTriangles()
 {
 	DrawConcentricTriangles();
+	SetColor(g_Black);
 	DrawSierpinskiTriangle(Point2f{ 350, 300 }, 80);
-	//DrawSierpinskiTriangle(Point2f{ (g_WindowWidth - g_WindowHeight) / 2, 10 }, g_WindowHeight);
 }
 
 void DrawPentagrams()
@@ -161,7 +162,6 @@ void DrawSierpinskiTriangle(Point2f position, float size)
 {
 	if (size <= 3.0f)
 		return;
-	SetColor(g_Black);
 	DrawEquilateralTriangle(position, size, false);
 	DrawSierpinskiTriangle(position, size / 2);
 	Point2f position2{ GetCoordinatesFromRadians(size / 2, ConvertDegreesToRadians(60.0f), position) };
