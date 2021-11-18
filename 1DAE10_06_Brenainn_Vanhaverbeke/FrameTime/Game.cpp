@@ -1,5 +1,9 @@
+// Vanhaverbeke, Brenainn - 1DAE10
+
 #include "pch.h"
 #include "Game.h"
+#include "MyUtils.h"
+#include <iostream>
 
 //Basic game functions
 #pragma region gameFunctions											
@@ -10,26 +14,16 @@ void Start()
 
 void Draw()
 {
-	ClearBackground();
-
-	// Put your own draw statements here
-
+	ClearBackground(0.0f, 0.0f, 0.0f);
+	DrawBall();
+	DrawFreeFall();
 }
 
 void Update(float elapsedSec)
 {
-	// process input, do physics 
-
-	// e.g. Check keyboard state
-	//const Uint8 *pStates = SDL_GetKeyboardState( nullptr );
-	//if ( pStates[SDL_SCANCODE_RIGHT] )
-	//{
-	//	std::cout << "Right arrow key is down\n";
-	//}
-	//if ( pStates[SDL_SCANCODE_LEFT] && pStates[SDL_SCANCODE_UP])
-	//{
-	//	std::cout << "Left and up arrow keys are down\n";
-	//}
+	UpdateStatistics(elapsedSec);
+	UpdateBall(elapsedSec);
+	UpdateFreeFall(elapsedSec);
 }
 
 void End()
@@ -47,54 +41,69 @@ void OnKeyDownEvent(SDL_Keycode key)
 
 void OnKeyUpEvent(SDL_Keycode key)
 {
-	//switch (key)
-	//{
-	//case SDLK_LEFT:
-	//	//std::cout << "Left arrow key released\n";
-	//	break;
-	//case SDLK_RIGHT:
-	//	//std::cout << "Right arrow key released\n";
-	//	break;
-	//case SDLK_1:
-	//case SDLK_KP_1:
-	//	//std::cout << "Key 1 released\n";
-	//	break;
-	//}
+	if (key == SDLK_s)
+		g_IsFalling = true;
 }
 
-void OnMouseMotionEvent(const SDL_MouseMotionEvent& e)
-{
-	//std::cout << "  [" << e.x << ", " << e.y << "]\n";
-	//Point2f mousePos{ float( e.x ), float( g_WindowHeight - e.y ) };
-}
+void OnMouseMotionEvent(const SDL_MouseMotionEvent& e) {}
 
-void OnMouseDownEvent(const SDL_MouseButtonEvent& e)
-{
+void OnMouseDownEvent(const SDL_MouseButtonEvent& e) {}
 
-}
-
-void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
-{
-	////std::cout << "  [" << e.x << ", " << e.y << "]\n";
-	//switch (e.button)
-	//{
-	//case SDL_BUTTON_LEFT:
-	//{
-	//	//std::cout << "Left mouse button released\n";
-	//	//Point2f mousePos{ float( e.x ), float( g_WindowHeight - e.y ) };
-	//	break;
-	//}
-	//case SDL_BUTTON_RIGHT:
-	//	//std::cout << "Right mouse button released\n";
-	//	break;
-	//case SDL_BUTTON_MIDDLE:
-	//	//std::cout << "Middle mouse button released\n";
-	//	break;
-	//}
-}
+void OnMouseUpEvent(const SDL_MouseButtonEvent& e) {}
 #pragma endregion inputHandling
 
 #pragma region ownDefinitions
 // Define your own functions here
+
+void UpdateStatistics(float elapsedSec)
+{
+	g_NumberOfFrames++;
+	g_AccumulatedTime += elapsedSec;
+	if (g_NumberOfFrames % 100 == 0)
+	{
+		std::cout << "Number of frames: " << g_NumberOfFrames;
+		std::cout << "\t AccumulatedTime: " << g_AccumulatedTime;
+		std::cout << "\t Framerate: " << g_NumberOfFrames / g_AccumulatedTime;
+		std::cout << std::endl;
+	}
+}
+
+void UpdateBall(float elapsedSec)
+{
+	g_Ball.center.x += g_HorizontalBallSpeed * elapsedSec;
+	g_Ball.center.y += g_VerticalBallSpeed * elapsedSec;
+	if (g_Ball.center.x < g_BallRadius || g_WindowWidth - g_BallRadius < g_Ball.center.x)
+		g_HorizontalBallSpeed *= -1;
+	if (g_Ball.center.y < g_BallRadius || g_WindowHeight - g_BallRadius < g_Ball.center.y)
+		g_VerticalBallSpeed *= -1;
+}
+
+void UpdateFreeFall(float elapsedSec)
+{
+	if (g_IsFalling)
+	{
+		g_FreeFallSpeed += g_Gravity * elapsedSec;
+		g_FreeFallingSquare.bottom += g_FreeFallSpeed * elapsedSec;
+		std::cout << "Current velocity: " << g_FreeFallSpeed << std::endl;
+		if (g_FreeFallingSquare.bottom + g_SquareSide < 0)
+		{
+			g_IsFalling = false;
+			g_FreeFallingSquare.bottom = g_WindowHeight - g_SquareSide;
+			g_FreeFallSpeed = 0.0f;
+		}
+	}
+}
+
+void DrawBall()
+{
+	SetColor(g_Orange);
+	FillEllipse(g_Ball);
+}
+
+void DrawFreeFall()
+{
+	SetColor(g_Yellow);
+	FillRect(g_FreeFallingSquare);
+}
 
 #pragma endregion ownDefinitions

@@ -14,7 +14,32 @@ float g_WindowHeight{ 300 };
 #pragma region ownDeclarations
 // Declare your own global variables here
 
+const float g_Gravity{ -9.81f };
+const float g_BallRadius{ 20.0f };
+const float g_SquareSide{ 25.0f };
+
+const Color4f g_Orange{ 0.82f, 0.32f, 0.0f, 1.0f };
+const Color4f g_Yellow{ 1.0f, 1.0f, 0.0f, 1.0f };
+
+int g_NumberOfFrames{ 0 };
+float g_AccumulatedTime{ 0 };
+float g_FrameRate{ 0 };
+float g_HorizontalBallSpeed{ 100 };
+float g_VerticalBallSpeed{ 80 };
+float g_FreeFallSpeed{ 0 };
+bool g_IsFalling{ false };
+
+Ellipsef g_Ball{ g_WindowWidth / 2, g_WindowHeight / 2, g_BallRadius, g_BallRadius };
+Rectf g_FreeFallingSquare{ (g_WindowWidth - g_SquareSide) / 2, g_WindowHeight - g_SquareSide, g_SquareSide, g_SquareSide };
+
 // Declare your own functions here
+
+void UpdateStatistics(float elapsedSec);
+void UpdateBall(float elapsedSec);
+void UpdateFreeFall(float elapsedSec);
+
+void DrawBall();
+void DrawFreeFall();
 
 #pragma endregion ownDeclarations
 
