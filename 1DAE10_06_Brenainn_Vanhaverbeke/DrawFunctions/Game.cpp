@@ -160,13 +160,16 @@ void DrawEquilateralTriangle(Point2f position, float size, bool isFilled)
 
 void DrawSierpinskiTriangle(Point2f position, float size)
 {
-	if (size <= 3.0f)
+	if (size <= 10.0f)
 		return;
 	DrawEquilateralTriangle(position, size, false);
+	SetColor(g_Red);
 	DrawSierpinskiTriangle(position, size / 2);
 	Point2f position2{ GetCoordinatesFromRadians(size / 2, ConvertDegreesToRadians(60.0f), position) };
+	SetColor(g_Green);
 	DrawSierpinskiTriangle(position2, size / 2);
 	Point2f position3{ position.x + size / 2, position.y };
+	SetColor(g_Blue);
 	DrawSierpinskiTriangle(position3, size / 2);
 }
 
@@ -210,18 +213,6 @@ void DrawDotGrid(Point2f basePosition, float radius, float columns, float rows, 
 			FillEllipse(basePosition.x + (offset * column), basePosition.y + (offset * row), radius, radius);
 		}
 	}
-}
-
-float ConvertDegreesToRadians(float degrees)
-{
-	return degrees * (g_Pi / 180);
-}
-
-Point2f GetCoordinatesFromRadians(float radius, float radians, Point2f offset)
-{
-	float x = offset.x + (radius * cosf(radians));
-	float y = offset.y + (radius * sinf(radians));
-	return Point2f{ x, y };
 }
 
 #pragma endregion ownDefinitions
