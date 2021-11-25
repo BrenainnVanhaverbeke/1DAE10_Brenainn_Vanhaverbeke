@@ -108,9 +108,9 @@ void CalculateHand(float rotationSpeed, float radius)
 	float angle = rotationSpeed * ((int)g_NumberOfFrames % (int)(g_LargeFullRotation * 12));
 	float topAngle = angle + g_HandOffest;
 	float bottomAngle = angle - g_HandOffest;
-	float radian = DegreesToRadian(angle);
-	float topRadian = DegreesToRadian(topAngle);
-	float bottomRadian = DegreesToRadian(bottomAngle);
+	float radian = DegreesToRadian(angle) * -1;
+	float topRadian = DegreesToRadian(topAngle) * -1;
+	float bottomRadian = DegreesToRadian(bottomAngle) * -1;
 	float segmentRadius = radius * 0.3f;
 	Point2f topCoordinates = GetCoordinatesFromRadian(segmentRadius, topRadian, g_Center.x, g_Center.y);
 	Point2f bottomCoordinates = GetCoordinatesFromRadian(segmentRadius, bottomRadian, g_Center.x, g_Center.y);

@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "Game.h"
-#include "MyUtils.h"
 
 //Basic game functions
 #pragma region gameFunctions											
