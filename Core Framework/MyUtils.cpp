@@ -21,8 +21,10 @@ Color4f GetRandomColour()
 	return Color4f{ r, g, b, 1 };
 }
 
-float GetRandomNumber(int lowestValue, int amountOfValues)
+float GetRandomNumber(int lowestValue, int highestValue, bool isInclusive)
 {
-	amountOfValues++;
+	int amountOfValues{ highestValue - lowestValue };
+	if (isInclusive)
+		amountOfValues++;
 	return (float)(rand() % amountOfValues) + lowestValue;
 }

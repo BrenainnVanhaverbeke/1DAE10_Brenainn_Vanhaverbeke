@@ -30,9 +30,11 @@ namespace utils
 	void FillRect(const Point2f& bottomLeft, float width, float height);
 	void FillRect(const Rectf& rect);
 
+	void DrawCircle(const Circlef& circle, float lineWidth = 1.0f);
 	void DrawEllipse(float centerX, float centerY, float radX, float radY, float lineWidth = 1.0f);
 	void DrawEllipse(const Point2f& center, float radX, float radY, float lineWidth = 1.0f);
 	void DrawEllipse(const Ellipsef& ellipse, float lineWidth = 1.0f);
+	void FillCircle(const Circlef& circle);
 	void FillEllipse(float centerX, float centerY, float radX, float radY);
 	void FillEllipse(const Ellipsef& ellipse);
 	void FillEllipse(const Point2f& center, float radX, float radY);
@@ -50,6 +52,9 @@ namespace utils
 	void DrawPolygon(const Point2f* pVertices, size_t nrVertices, bool closed = true, float lineWidth = 1.0f);
 	void FillPolygon(const std::vector<Point2f>& vertices);
 	void FillPolygon(const Point2f* pVertices, size_t nrVertices);
+
+	void DrawVector(Vector2f& vector, Point2f startingPoint = Point2f{ 0, 0 });
+
 #pragma endregion OpenGLDrawFunctionality
 
 #pragma region TextureFunctionality
@@ -71,6 +76,39 @@ namespace utils
 
 #pragma region CollisionFunctionality
 
+	float GetDistance(Point2f pointA, Point2f pointB);
+	float GetDistance(float pointAX, float pointAY, float pointBX, float pointBY);
+	
+	bool IsPointInCircle(const Circlef& circle, const Point2f& point);
+	bool IsPointInRectangle(const Rectf& rectangle, const Point2f& point);
+
+	bool IsOverlapping(const Rectf& rectangleA, const Rectf& rectangleB);
+	bool IsOverlapping(const Circlef& circleA, const Circlef& circleB);
+
 #pragma endregion CollisionFunctionality
 
+#pragma region VectorFunctionality
+
+	Vector2f Add(Vector2f& vectorA, Vector2f& vectorB);
+	Vector2f Subtract(Vector2f& vectorA, Vector2f& vectorB);
+	float DotProduct(Vector2f& vectorA, Vector2f& vectorB);
+	float CrossProduct(Vector2f& vectorA, Vector2f& vectorB);
+	std::string ToString(Vector2f& vector);
+	Vector2f Scale(Vector2f& vectorA, float scalar);
+	float Length(Vector2f& vector);
+	Vector2f Normalise(Vector2f& vector);
+	float AngleBetween(Vector2f& vectorA, Vector2f& vectorB);
+	bool AreEqual(Vector2f& vectorA, Vector2f& vectorB);
+
+#pragma endregion VectorFunctionality
+
+#pragma region GeneralUtils
+
+	float ConvertDegreesToRadians(float degrees);
+	float ConvertRadiansToDegrees(float radians);
+	Point2f GetCoordinatesFromRadians(float radius, float radians, Point2f offset = Point2f{ 0.0f, 0.0f });
+	Color4f GetRandomColour();
+	float GetRandomNumber(int lowestValue, int highestValue, bool isInclusive = true);
+
+#pragma endregion GeneralUtils
 }

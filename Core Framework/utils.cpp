@@ -111,6 +111,11 @@ namespace utils
 		FillRect(rect.left, rect.bottom, rect.width, rect.height);
 	}
 
+	void DrawCircle(const Circlef& circle, float lineWidth)
+	{
+		DrawEllipse(circle.center, circle.radius, circle.radius, lineWidth);
+	}
+
 	void DrawEllipse(float centerX, float centerY, float radX, float radY, float lineWidth)
 	{
 		float dAngle{ radX > radY ? float(g_Pi / radX) : float(g_Pi / radY) };
@@ -134,6 +139,11 @@ namespace utils
 	void DrawEllipse(const Ellipsef& ellipse, float lineWidth)
 	{
 		DrawEllipse(ellipse.center.x, ellipse.center.y, ellipse.radiusX, ellipse.radiusY, lineWidth);
+	}
+
+	void FillCircle(const Circlef& circle)
+	{
+		FillEllipse(circle.center, circle.radius, circle.radius);
 	}
 
 	void FillEllipse(float centerX, float centerY, float radX, float radY)
@@ -246,6 +256,23 @@ namespace utils
 		}
 		glEnd();
 	}
+
+	void DrawVector(Vector2f& vector, Point2f startingPoint)
+	{
+		const float triangleLength{ 10.0f };
+		const float triangleAngle{ 30.0f + 180.0f };
+		const float lineThickness{ 2.0f };
+
+		Point2f endPoint{ startingPoint.x + vector.x, startingPoint.y + vector.y };
+		float vectorLength{ Length(vector) };
+		float angleInRadians{ atan2(vector.y, vector.x) };
+		float angleOffsetInRadians{ ConvertDegreesToRadians(triangleAngle) };
+		Point2f triangleBottomLeft{ GetCoordinatesFromRadians(triangleLength, angleInRadians + angleOffsetInRadians, endPoint) };
+		Point2f triangleBottomRight{ GetCoordinatesFromRadians(triangleLength, angleInRadians - angleOffsetInRadians, endPoint) };
+		DrawLine(startingPoint, endPoint, lineThickness);
+		FillTriangle(endPoint, triangleBottomLeft, triangleBottomRight);
+	}
+
 #pragma endregion OpenGLDrawFunctionality
 
 
@@ -493,6 +520,149 @@ namespace utils
 
 #pragma region CollisionFunctionality
 
+	float GetDistance(Point2f pointA, Point2f pointB)
+	{
+		float differenceX{ abs(pointA.x - pointB.x) };
+		float differenceY{ abs(pointA.y - pointB.y) };
+		return sqrtf(powf(differenceX, 2) + powf(differenceY, 2));
+	}
+
+	float GetDistance(float pointAX, float pointAY, float pointBX, float pointBY)
+	{
+		float differenceX{ abs(pointAX - pointBX) };
+		float differenceY{ abs(pointAY - pointBY) };
+		return sqrtf(powf(differenceX, 2) + powf(differenceY, 2));
+	}
+
+	bool IsPointInCircle(const Circlef& circle, const Point2f& point)
+	{
+		if (GetDistance(circle.center, point) <= circle.radius)
+			return true;
+		return false;
+	}
+
+	bool IsPointInRectangle(const Rectf& rectangle, const Point2f& point)
+	{
+		if ((rectangle.left <= point.x && point.x <= rectangle.left + rectangle.width)
+			&& (rectangle.bottom <= point.y && point.y <= rectangle.bottom + rectangle.height))
+			return true;
+		return false;
+	}
+
+	bool IsOverlapping(const Rectf& rectangleA, const Rectf& rectangleB)
+	{
+		float rectangleARight{ rectangleA.left + rectangleA.width };
+		float rectangleATop{ rectangleA.bottom + rectangleA.height };
+		float rectangleBRight{ rectangleB.left + rectangleB.width };
+		float rectangleBTop{ rectangleB.bottom + rectangleB.height };
+		if (rectangleBRight <= rectangleA.left || rectangleARight <= rectangleB.left)
+			return false;
+		if (rectangleBTop <= rectangleA.bottom || rectangleATop <= rectangleB.bottom)
+			return false;
+		return true;
+	}
+
+	bool IsOverlapping(const Circlef& circleA, const Circlef& circleB)
+	{
+		float distanceBetweenCircles{ GetDistance(circleA.center, circleB.center) };
+		if (distanceBetweenCircles <= circleA.radius + circleB.radius)
+			return true;
+		return false;
+	}
 
 #pragma endregion CollisionFunctionality
+
+#pragma region VectorFunctionality
+
+	Vector2f Add(Vector2f& vectorA, Vector2f& vectorB)
+	{
+		return Vector2f{ vectorA.x + vectorB.x, vectorA.y + vectorB.y };
+	}
+
+	Vector2f Subtract(Vector2f& vectorA, Vector2f& vectorB)
+	{
+		return Vector2f{ vectorA.x - vectorB.x, vectorA.y - vectorB.y };
+	}
+
+	float DotProduct(Vector2f& vectorA, Vector2f& vectorB)
+	{
+		return (vectorA.x * vectorB.x) + (vectorA.y * vectorB.y);
+	}
+
+	float CrossProduct(Vector2f& vectorA, Vector2f& vectorB)
+	{
+		return (vectorA.x * vectorB.y) - (vectorA.y * vectorB.x);
+	}
+
+	std::string ToString(Vector2f& vector)
+	{
+		return "[" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + "]";
+	}
+
+	Vector2f Scale(Vector2f& vectorA, float scalar)
+	{
+		return Vector2f{ vectorA.x * scalar, vectorA.y * scalar };
+	}
+
+	float Length(Vector2f& vector)
+	{
+		return sqrtf(powf(vector.x, 2) + powf(vector.y, 2));
+	}
+
+	Vector2f Normalise(Vector2f& vector)
+	{
+		float length = Length(vector);
+		return Vector2f{ vector.x / length, vector.y / length };
+	}
+
+	float AngleBetween(Vector2f& vectorA, Vector2f& vectorB)
+	{
+		return atan2(CrossProduct(vectorA, vectorB), DotProduct(vectorA, vectorB));
+	}
+
+	bool AreEqual(Vector2f& vectorA, Vector2f& vectorB)
+	{
+		bool isLengthEqual{ abs(Length(vectorA) - Length(vectorB)) <= 0.0001f };
+		bool isDirectionEqual{ abs(vectorA.x - vectorB.x) <= 0.0001f && abs(vectorA.y - vectorB.y) <= 0.0001f };
+		return isLengthEqual && isDirectionEqual;
+	}
+
+#pragma endregion VectorFunctionality
+
+#pragma region GeneralUtils
+
+	float ConvertDegreesToRadians(float degrees)
+	{
+		return degrees * (utils::g_Pi / 180);
+	}
+
+	float ConvertRadiansToDegrees(float radians)
+	{
+		return radians * (180 / utils::g_Pi);
+	}
+
+	Point2f GetCoordinatesFromRadians(float radius, float radians, Point2f offset)
+	{
+		float x = offset.x + (radius * cosf(radians));
+		float y = offset.y + (radius * sinf(radians));
+		return Point2f{ x, y };
+	}
+
+	Color4f GetRandomColour()
+	{
+		float r{ GetRandomNumber(0, 255) / 255 };
+		float g{ GetRandomNumber(0, 255) / 255 };
+		float b{ GetRandomNumber(0, 255) / 255 };
+		return Color4f{ r, g, b, 1 };
+	}
+
+	float GetRandomNumber(int lowestValue, int highestValue, bool isInclusive)
+	{
+		int amountOfValues{ highestValue - lowestValue };
+		if (isInclusive)
+			amountOfValues++;
+		return (float)(rand() % amountOfValues) + lowestValue;
+	}
+
+#pragma endregion GeneralUtils
 }
