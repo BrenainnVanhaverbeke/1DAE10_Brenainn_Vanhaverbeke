@@ -631,6 +631,11 @@ namespace utils
 
 #pragma region GeneralUtils
 
+	Point2f GetMiddle(const Point2f& pointA, const Point2f& pointB)
+	{
+		return Point2f{ (pointA.x + pointB.x) / 2, (pointA.y + pointB.y) / 2 };
+	}
+
 	float ConvertDegreesToRadians(float degrees)
 	{
 		return degrees * (utils::g_Pi / 180);

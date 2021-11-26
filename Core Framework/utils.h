@@ -104,6 +104,7 @@ namespace utils
 
 #pragma region GeneralUtils
 
+	Point2f GetMiddle(const Point2f& pointA, const Point2f& pointB);
 	float ConvertDegreesToRadians(float degrees);
 	float ConvertRadiansToDegrees(float radians);
 	Point2f GetCoordinatesFromRadians(float radius, float radians, Point2f offset = Point2f{ 0.0f, 0.0f });
