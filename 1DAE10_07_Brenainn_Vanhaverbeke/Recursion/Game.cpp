@@ -14,7 +14,8 @@ void Draw()
 {
 	ClearBackground(0.0f, 0.0f, 0.0f);
 	Point2f origin{ 0, 0 };
-	DrawSierpinskiTriangle(origin, g_WindowWidth);
+	DrawEquilateralSierpinskiTriangle(origin, g_WindowWidth / 2);
+	DrawSierpinskiTriangle(Point2f{ g_WindowWidth / 2,0 }, Point2f{ g_WindowWidth * 0.75f, g_WindowHeight }, Point2f{ g_WindowWidth, 0 });
 }
 
 void Update(float elapsedSec)
@@ -84,7 +85,7 @@ void OnMouseUpEvent(const SDL_MouseButtonEvent& e)
 
 #pragma region ownDefinitions
 // Define your own functions here
-void DrawEquilateralTriangle(Point2f& position, float size, bool isFilled)
+void DrawEquilateralTriangle(const Point2f& position, float size, bool isFilled)
 {
 	Point2f position2{ GetCoordinatesFromRadians(size, ConvertDegreesToRadians(60.0f), position) };
 	Point2f position3{ Point2f{ position.x + size, position.y } };
@@ -94,19 +95,38 @@ void DrawEquilateralTriangle(Point2f& position, float size, bool isFilled)
 		DrawTriangle(position, position2, position3);
 }
 
-void DrawSierpinskiTriangle(Point2f& position, float size)
+void DrawEquilateralSierpinskiTriangle(const Point2f& position, float size)
 {
 	if (size <= 10.0f)
 		return;
 	DrawEquilateralTriangle(position, size, false);
 	SetColor(g_Red);
-	DrawSierpinskiTriangle(position, size / 2);
+	DrawEquilateralSierpinskiTriangle(position, size / 2);
 	Point2f position2{ GetCoordinatesFromRadians(size / 2, ConvertDegreesToRadians(60.0f), position) };
 	SetColor(g_Green);
-	DrawSierpinskiTriangle(position2, size / 2);
+	DrawEquilateralSierpinskiTriangle(position2, size / 2);
 	Point2f position3{ position.x + size / 2, position.y };
 	SetColor(g_Blue);
-	DrawSierpinskiTriangle(position3, size / 2);
+	DrawEquilateralSierpinskiTriangle(position3, size / 2);
+}
+
+void DrawSierpinskiTriangle(const Point2f& left, const Point2f& top, const Point2f& right)
+{
+	utils::DrawTriangle(left, top, right);
+	if (GetDistance(left, right) <= 20.0f)
+		return;
+	SetColor(1.0f, 0.0f, 0.0f);
+	DrawSierpinskiTriangle(left, GetMiddle(left, top), GetMiddle(left, right));
+	SetColor(0.0f, 1.0f, 0.0f);
+	DrawSierpinskiTriangle(GetMiddle(left, right), GetMiddle(right, top), right);
+	SetColor(0.0f, 0.0f, 1.0f);
+	DrawSierpinskiTriangle(GetMiddle(left, top), top, GetMiddle(top, right));
+}
+
+
+Point2f GetMiddle(const Point2f& pointA, const Point2f& pointB)
+{
+	return Point2f{ (pointA.x + pointB.x) / 2, (pointA.y + pointB.y) / 2 };
 }
 
 #pragma endregion ownDefinitions

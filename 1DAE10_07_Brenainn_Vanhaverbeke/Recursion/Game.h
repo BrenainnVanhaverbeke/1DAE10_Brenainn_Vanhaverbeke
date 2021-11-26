@@ -6,7 +6,7 @@ std::string g_WindowTitle{ "Project name - Name, firstname - 1DAExx" };
 
 // Change the window dimensions here
 float g_WindowWidth{ 500 };
-float g_WindowHeight{ 434 };
+float g_WindowHeight{ 300 };
 #pragma endregion gameInformation
 
 
@@ -18,8 +18,10 @@ Color4f g_Green{ 0.0f, 1.0f, 0.0f, 1.0f };
 Color4f g_Blue{ 0.0f, 0.0f, 1.0f, 1.0f };
 
 // Declare your own functions here
-void DrawEquilateralTriangle(Point2f& position, float size, bool isFilled);
-void DrawSierpinskiTriangle(Point2f& position, float size);
+void DrawEquilateralTriangle(const Point2f& position, float size, bool isFilled);
+void DrawEquilateralSierpinskiTriangle(const Point2f& position, float size);
+void DrawSierpinskiTriangle(const Point2f& left, const Point2f& top, const Point2f& right);
+Point2f GetMiddle(const Point2f& pointA, const Point2f& pointB);
 
 #pragma endregion ownDeclarations
 
