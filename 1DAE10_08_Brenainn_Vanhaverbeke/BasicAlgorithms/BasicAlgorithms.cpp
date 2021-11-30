@@ -144,7 +144,7 @@ void Shuffle(int* pArray, int arraySize, int amountOfSwaps)
 
 void TestBubbleSort()
 {
-	const int iterations{ 5 };
+	const int iterations{ 500 };
 	for (int i{ 0 }; i < iterations; i++)
 	{
 		int testArray[g_DefaultArraySize]{};
@@ -161,13 +161,17 @@ void TestBubbleSort()
 
 void BubbleSort(int* pArray, int arraySize)
 {
-	if (arraySize == 1)
-		return;
+	//if (arraySize == 1) return;
+	bool swapped{ false };
 	for (int i{ 0 }; i < arraySize - 1; i++)
 	{
 		if (pArray[i + 1] < pArray[i])
+		{
 			Swap(pArray, i, i + 1);
+			swapped = true;
+		}
 	}
+	if (!swapped) return;
 	BubbleSort(pArray, arraySize - 1);
 }
 
