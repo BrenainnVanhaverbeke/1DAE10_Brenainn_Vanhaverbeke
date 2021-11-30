@@ -161,7 +161,6 @@ void TestBubbleSort()
 
 void BubbleSort(int* pArray, int arraySize)
 {
-	//if (arraySize == 1) return;
 	bool swapped{ false };
 	for (int i{ 0 }; i < arraySize - 1; i++)
 	{
