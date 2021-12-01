@@ -22,7 +22,7 @@ Texture g_CardTextures[g_AmountOfCards]{};
 // Declare your own functions here
 
 void InitialiseCardTextures();
-void ShuffleCards();
+void ShuffleCards(int amountOfShuffles);
 void DrawCards();
 
 int GetLinearIndexFrom2DIndex(int rowIndex, int columnIndex, int nrOfColumns);
