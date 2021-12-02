@@ -214,9 +214,9 @@ void DrawGrid()
 {
 	const Color4f toggledOn{ 1.0f, 0.4f, 0.2f, 1.0f };
 	const Color4f togledOff{ 0.8f, 0.8f, 0.8f, 1.0f };
-	for (int row = 0; row < g_GridRows; row++)
+	for (int row{ 0 }; row < g_GridRows; row++)
 	{
-		for (int column = 0; column < g_GridColumns; column++)
+		for (int column{ 0 }; column < g_GridColumns; column++)
 		{
 			Point2f bottomLeft{ g_GridOrigin.x + (g_SideLength * column), g_GridOrigin.y + (g_SideLength * row) };
 			int index{ Get2DIndex(row, column, g_GridColumns) };
