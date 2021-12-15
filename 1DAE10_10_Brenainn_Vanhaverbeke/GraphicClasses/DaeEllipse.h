@@ -2,7 +2,6 @@
 class DaeEllipse
 {
 public:
-	DaeEllipse();
 	DaeEllipse(const Point2f& center, float radX, float radY, const Color4f& fillColour);
 	void Draw();
 	void ActivateTest(const Point2f& position);

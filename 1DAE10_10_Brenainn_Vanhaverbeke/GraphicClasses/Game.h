@@ -25,9 +25,9 @@ const int g_AmountOfDaeEllipses{ 3 };
 
 Color4f g_Black{ 0.0f, 0.0f, 0.0f, 1.0f };
 
-Fraction* g_pFractions{ nullptr };
-Light* g_pLights{ nullptr };
-DaeEllipse* g_pDaeEllipses{ nullptr };
+Fraction* g_pFractions[g_AmountOfFractions] { nullptr };
+Light* g_pLights[g_AmountOfLights]{ nullptr };
+DaeEllipse* g_pDaeEllipses[g_AmountOfDaeEllipses]{ nullptr };
 
 // Declare your own functions here
 void InitialiseFractions();

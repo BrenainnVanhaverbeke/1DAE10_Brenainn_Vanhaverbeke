@@ -2,11 +2,6 @@
 #include "DaeEllipse.h"
 #include <iostream>
 
-DaeEllipse::DaeEllipse()
-	: DaeEllipse(Point2f{ 0,0 }, 0.0f, 0.0f, Color4f{ 0.0f, 0.0f, 0.0f, 0.0f })
-{
-}
-
 DaeEllipse::DaeEllipse(const Point2f& center, float radX, float radY, const Color4f& fillColour)
 	: m_Center{ center }, m_RadX{ radX }, m_RadY{ radY }, m_FillColour{ fillColour }, m_Area{ utils::g_Pi * radX * radY }
 	, m_IsActive{ false }
