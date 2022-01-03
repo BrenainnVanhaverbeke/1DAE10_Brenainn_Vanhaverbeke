@@ -1,4 +1,5 @@
 // Vanhaverbeke, Brenainn - 1DAE10
+// Addendum: Jolan is a damn sexy beast <3 <3 <3
 
 #include "pch.h"
 #include "Game.h"
